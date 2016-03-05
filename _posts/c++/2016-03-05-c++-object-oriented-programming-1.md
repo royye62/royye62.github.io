@@ -1,4 +1,13 @@
-## 面向对象 Object Oritented
+---
+layout: post
+category : c++
+tagline:
+tags : [c++, OO, inline]
+---
+
+
+## 面向对象 Object Oritented  
+
 ### 基于对象(Object Based) vs. 面向对象(Object Oritented)
 Object Based 面对的是单一 class 的设计（只有封装，即带类的C）
 Object Oritented 面对的是多重classes的设计，classes 和 classes 之间的关系（继承＋多态）
@@ -27,21 +36,6 @@ class with pointer members
 ### C vs C++
 1. C is procedure programming  
 2. C++ is Object-Oriented Programming (OOP)
-
-## inline vs. marco
-define：字符串替换
-inline：内联函数，编译器进行代码替换
-
-define：预编译阶段；inline：编译阶段
-define：无类型，不安全检查；inline：有类型，安全检查
-define：替换字符串；inline：替换代码
-
-空间换时间的思想
-inline 是增加代码段的代价来减少函数调用的开销。
-## 面向对象 Object Oritented
-### 基于对象(Object Based) vs. 面向对象(Object Oritented)
-Object Based 面对的是单一 class 的设计（只有封装，即带类的C）
-Object Oritented 面对的是多重classes的设计，classes 和 classes 之间的关系（继承＋多态）
 
 ### features of OOP (A PIE)
 1. Abstration
@@ -84,41 +78,40 @@ C++中的const关键字的用法非常灵活，而使用const将大大改善程�
 
 * 类相关
   * const成员变量
-````c++
-  class Foo
-  {
-    Foo(int x)
-      :n(x)           //只能在初始化列表中赋值   
-    { }
 
-    const int n;      //成员常量不能被修改   
-   }
-````
+        class Foo
+        {
+          Foo(int x)
+            :n(x)           //只能在初始化列表中赋值   
+          { }
 
+          const int n;      //成员常量不能被修改   
+        }
+        
   * const成员函数
-  ````c++
-  class Foo
-  {
-    //不能改变对象的成员变量
-    //不能调用类中任何非const成员函数
-    void func() const;        
-  }
-  ````
-  * const类对象/对象指针/对象引用
-  ````c++
-    struct Foo
-    {
-    	int func1() const {}
-    	int func2() {}
-    };
 
-    int main()
-    {
-    	const Foo f;
-    	f.func1();
-    	f.func2(); //Error. const object can not invoke non-const member function!
-    }
-  ````
+        class Foo
+        {
+          //不能改变对象的成员变量
+          //不能调用类中任何非const成员函数
+          void func() const;        
+        }
+
+  * const类对象/对象指针/对象引用
+
+        struct Foo
+        {
+        	int func1() const {}
+        	int func2() {}
+        };
+
+        int main()
+        {
+        	const Foo f;
+        	f.func1();
+        	f.func2(); //Error. const object can not invoke non-const member function!
+        }
+
 
 ## inline vs. marco
 
