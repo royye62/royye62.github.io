@@ -29,6 +29,60 @@ tags : [c++, OO, inline]
 - class without pointer members
 - class with pointer members
 
+#### 参数传递和返回值
+
+**传参**
+- pass by value
+- pass by pointer
+- pass by reference (to const)
+
+**返回值**
+- return by value
+- return by pointer
+- return by reference (to const)
+
+**Tips**
+- reference相对于pointer的一个优点是传递者无需知道接受者是以reference形式接收（接受者既可以by value，也可以by reference），pointer则必须双方都是pointer。
+- 尽量用pass by reference(C++尽量用引用替代指针)，并且必要的时候const
+- 尽量用return by reference。但是如果返回的是local object，则必须return by value，因为函数退出reference引用无效了
+
+
+````c++
+// return by reference
+// 操作符重载实质就是调用函数
+// 编译器认为操作符重载总作用于左操作数，即操作符左侧对象调用该函数
+inline complex&
+complex::operator += (const complex& r) //也可以定义为全局函数
+{
+	return __doapl(this, r); // class function, 有隐含的this，因此只需要传一个右操作数参数
+}
+
+// return by value
+//注意不能return by reference.因为返回的一定是个local object，函数退出reference引用无效了
+inline complex
+operator + (const complex& x, const complex& y)
+{
+    return complex(real(x) + real(y),
+                   imag(x) + imag(y)); //  typename(): temp object 临时对象。生命周期只有一行。分配完整的对象空间，只是没有对象名而已
+}
+````
+
+### operator overloading 操作符重载
+
+- 操作符重载实质就是调用函数
+- 编译器认为操作符重载总作用于左操作数，即操作符左侧对象调用该函数
+- 分为成员函数操作符重载 和 非成员函数操作符重载。
+	- 主要区别就是成员函数操作符重载包含隐藏的this指针，左操作数的参数可以省略。如+=的操作符。
+	- 非成员函数重载，没有隐藏的this，因此需要左操作数和右操作数两个参数。如<<的重载。
+
+### friend 友元
+
+
+其他类或者函数
+
+- friend 不是类成员，不受public/private访问控制的限制，所以出现的位置没有限制
+- friend 只能声明在类定义的内部，最好在类定义的开始或结束的位置集中声明
+- 同一个class的各个objects互为friends
 
 ----
 ### const 关键字(未完待续)  
