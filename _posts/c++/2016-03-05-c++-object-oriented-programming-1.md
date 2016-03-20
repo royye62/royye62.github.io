@@ -214,3 +214,16 @@ n是一个只读变量，程序不可以直接修改其值。这里还有一个�
 - constexpr自带inline属性
 - 尽量使用inline取代macro
   - assert是例外，assert是宏  
+
+
+### prefer const, inline, enum to macro(#define)
+
+macro
+- preprocessor
+- symbol table
+```
+#define ASPECT_RATIO 1.653 //bad
+const double ASPECT_RATIO = 1.653; //good
+const char * const authorName = "Scott Meyers";
+
+```
