@@ -11,9 +11,17 @@
 
 ### C++ is multi-paradigm Programming Language
 - procedural Programming
-- object-oriented Programming
-- functional Programming
+  - better C
+- data abstraction (value sematics)
+  - abstract data type(ADT)
+- object-based (object sematics)
+  - Encapsulation
+- object-oriented (object sematics)
+  - Encapsulation
+  - Inheritance
+  - Polymorphism
 - generic Programming
+- functional Programming
 - meta-programming
 
 ### sub-language of C++
@@ -21,7 +29,6 @@
   - 兼容C语法（为此C++付出了很大的代价）
   - 兼容C的编译模型和运行模型
 - object-oriented C++
-  - classes
   - Encapsulation
   - Inheritance
   - Polymorphism
@@ -41,3 +48,17 @@
 
 
 前置声明(forward declaration)减少使用include
+
+
+### C++语言的三大约束是
+- 与C兼容
+  - 不仅是语法兼容，更重要的是兼容C语言的编译模型与运行模型，也就是能直接使用C语言的头文件。
+- 零开销
+  - ?
+- 值语义
+
+
+### C++对象语义与值语义
+object-based 是对象语义
+abstract data type(ADT) 是值语义
+？？
