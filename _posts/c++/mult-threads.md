@@ -80,7 +80,7 @@ In concurrent programming, a critical section is a part of a multi-process progr
 ```
 
 ### race condition 竞态条件
-- 线程的调度算法是抢占式的。因此如果对共享资源的操作不是原子操作，则会导致数据不一致的情况
+- 线程的调度算法是抢占式(preempt)的。因此如果对共享资源的操作不是原子操作，则会导致数据不一致的情况
 ```
 A race condition occurs when two or more threads can access shared data and they try to change it at the same time. Because the thread scheduling algorithm can swap between threads at any time, you don't know the order in which the threads will attempt to access the shared data. Therefore, the result of the change in data is dependent on the thread scheduling algorithm, i.e. both threads are "racing" to access/change the data.
 ```
@@ -117,18 +117,42 @@ if (x == 5) // The "Check"
 ### IPC问题
 
 
+### disadvantage of lock
+- 死锁
+	- 多个锁不按顺序的话
+- 优先级反转
+	- 可能高优先级的等待低优先级的
+- 信号安全
+	- 中断/信号处理函数中不能加锁
+- 崩溃处理?
+	- 崩溃时可能占着锁
+- 抢占的影响?
+	- 被抢占时可能还占着锁
 
-最好的教程：
+### Lock-Free
+锁只是同步方法的一种，同步分阻塞同步和非阻塞同步。
+lockfree就可以保证非阻塞同步，同时也尽量保证了waitfree，但依然做不到完全的waitfree。
+业界在原子操作的基础上提出了著名的 CAS（Compare - And - Swap）操作来实现 Lock-Free 算法
+
+```
+Bool CAS(T* addr, T expected, T newValue)
+{
+		 if( *addr == expected )
+		{
+				 *addr =  newValue;
+					return true;
+		}
+		else
+					return false;
+}
+```
+
+## pthread
+
+### resources
 https://computing.llnl.gov/tutorials/pthreads/
-
 http://www.ibm.com/developerworks/cn/linux/l-pthred/
 https://www.ibm.com/developerworks/cn/linux/thread/posix_thread2/
-
-=====================================================================
-No manual entry for pthread_*
-=====================================================================
-aptitude install manpages-posix-dev
-
 
 ## pthread vs process
 pthread - Posix pthread. POSIX.1 specifies a set of interfaces (functions, header files) for threaded programming commonly known as POSIX threads, or Pthreads
@@ -170,8 +194,54 @@ attributes are per-thread, distinct for each pthred
 registers ??
 
 
+### 多进程 vs 多线程
+1. 开销
+多进程是一种"昂贵"的多任务方式。
+	启动一个新的进程必须分配给它独立的地址空间，建立众多的数据表来维护它的代码段、堆栈段和数据段，
+
+多线程是一种"节俭"的多任务方式。
+	运行于一个进程中的多个线程，它们彼此之间使用相同的地址空间，共享大部分数据。
+	启动一个线程所花费的空间远远小于启动一个进程所花费的空间，
+	线程间彼此切换所需的时间也远远小于进程间切换所需要的时间。
+
 创建和管理线程的开销比进程小一个数量级
 When compared to the cost of creating and managing a process, a thread can be created with much less operating system overhead. Managing threads requires fewer system resources than managing processes.
+
+2.通信和同步
+多进程
+	具有相互独立的地址空间。必须通过IPC方式通信
+
+多线程
+	直接使用共享数据。但同时带来了 线程同步 问题
+
+3. 都能更好利用多核资源
+
+多进程优点：
+每个进程互相独立，不影响主程序的稳定性，子进程崩溃没关系；
+通过增加CPU，就可以容易扩充性能；
+可以尽量减少线程加锁/解锁的影响，极大提高性能，就算是线程运行的模块算法效率低也没关系；
+每个子进程都有2GB地址空间和相关资源，总体能够达到的性能上限非常大
+
+多进程缺点：
+逻辑控制复杂，需要和主程序交互；
+需要跨进程边界，如果有大数据量传送，就不太好，适合小数据量传送、密集运算
+多进程调度开销比较大
+
+多线程的优点：
+无需跨进程边界；
+程序逻辑和控制方式简单；
+所有线程可以直接共享内存和变量等；
+线程方式消耗的总资源比进程方式好；
+
+多线程缺点：
+每个线程与主程序共用地址空间，受限于2GB地址空间；
+线程之间的同步和加锁控制比较麻烦；
+一个线程的崩溃可能影响到整个程序的稳定性；
+到达一定的线程数程度后，即使再增加CPU也无法提高性能，例如Windows Server 2003，大约是1500个左右的线程数就快到极限了（线程堆栈设定为1M），如果设定线程堆栈为2M，还达不到1500个线程总数；
+线程能够提高的总性能有限，而且线程多了之后，线程本身的调度也是一个麻烦事儿，需要消耗较多的CPU
+最好是多进程和多线程结合，即根据实际的需要，每个CPU开启一个子进程，这个子进程开启多线程可以为若干同类型的数据进行处理。当然你也可以利用多线程+多CPU+轮询方式来解决问题
+
+
 
 
 ### Thread Termination 线程终止
@@ -193,7 +263,7 @@ For example, the maximum number of threads permitted, and the default thread sta
 它和全局变量很象，在线程内部，各个函数可以象使用全局变量一样调用它，但它对线程外部的其它线程是不可见的
 如errno
 
-=====================================================================
+### volatile and muti-threads
 http://www.parallellabs.com/2010/12/04/why-should-we-be-care-of-volatile-keyword-in-multithreaded-applications/
 注意：
 	多线程中，不应该使用volatile变量来做同步。
@@ -234,44 +304,7 @@ thread pool
 http://www.ibm.com/developerworks/cn/java/l-threadPool/
 
 
-==============================================================
 
-==============================================================
 使用 C++11 编写 Linux 多线程程序：http://blog.jobbole.com/81265/
 
 需要注意一点，因为单个 CPU 内核下多个线程并不是真正的并行，有些问题，比如 CPU 缓存不一致问题，不一定能表现出来，一旦这些代码被放到了多核或者多 CPU 的环境运行，就很可能会出现“在开发测试环境一切没有问题，到了实施现场就莫名其妙”的情况，所以，在进行多线程开发时，开发与测试环境应该是多核或者多 CPU 的，以避免出现这类情况。
-
-=========================================================
-数据处理同步问题
-=========================================================
-锁只是同步方法的一种，同步分阻塞同步和非阻塞同步。
-lockfree就可以保证非阻塞同步，同时也尽量保证了waitfree，但依然做不到完全的waitfree。
-
-2.既然讨论无锁，就得说说有锁会导致的问题
-a）死锁
-多个锁不按顺序的话
-b）优先级反转
-可能高优先级的等待低优先级的
-c）影响实时性
-等锁时间不定
-d）信号安全
-中断/信号处理函数中不能加锁
-e）崩溃处理
-崩溃时可能占着锁
-f）抢占的影响
-被抢占时可能还占着锁
-g）影响整体性能
-切换进程影响性能
-
- Lock-Free
- 业界在原子操作的基础上提出了著名的 CAS（Compare - And - Swap）操作来实现 Lock-Free 算法
- Bool CAS(T* addr, T expected, T newValue)
- {
-      if( *addr == expected )
-     {
-          *addr =  newValue;
-           return true;
-     }
-     else
-           return false;
- }
