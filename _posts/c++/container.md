@@ -20,7 +20,7 @@
 标准容器
 非标准容器
 
-### 顺序容器 sequential container
+### sequential container 顺序容器
 顺序容器：元素在容器中的顺序与其加入容器时的位置相对应，而不依赖于元素本身的值.
 
 - performance trade-offs(性能折中) of container
@@ -42,11 +42,29 @@
   - fast insert/delete at front or back
   - 存储方式待定
 
+### associative container 关联容器
+- Elements in an associative container are stored and retrieved by a `key`
+  - In contrast, elements in a sequential container are stored and accessed sequentially by their position in the container.
 
+- two primary types
+  - map
+    - The elements in a map are key–value pairs
+  - set
+    - A set element contains only a key
 
+```
+// elements ordered by key
+map // key-value pairs, unique key
+set // key is the value, unique key
+multimap // allow multiple key
+multiset
 
-### 关联容器
-
+// unordered key
+unordered_map
+unordered_set
+unordered_multimap
+unordered_multiset
+```
 
 
 ### container common operation

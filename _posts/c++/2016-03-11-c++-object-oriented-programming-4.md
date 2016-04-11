@@ -59,3 +59,7 @@ Blob<int> ia2 = {0, 1, 2, 3, 4};
 Blob<int> ia2 = {0, 1, 2, 3, 4}; // 类模板实例化
 ia2.size(); // 实例化 Blob<int>::size() const
 ```
+
+
+### resource
+[C++ 模板技法](https://segmentfault.com/a/1190000003901666)
