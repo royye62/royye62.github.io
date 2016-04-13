@@ -57,6 +57,16 @@
   - ?
 - 值语义
 
+### variable, reference
+- variable => physical concept
+  - data type. decide the memory layout
+  - data value
+- variable name => logic concept
+  - the alias of a block of memory, compiler can associate the value name with value memory, so programmer can manipulate the memory by value name.
+
+- reference => the alias of a variable
+  - the essence is a const pointer(Type * const name)
+  - why use? it's fast as pointer and easy-to-read
 
 ### C++对象语义与值语义
 object-based 是对象语义
