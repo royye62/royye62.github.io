@@ -27,7 +27,7 @@
   - the costs to add/remove elements in container
   - the costs to random access the elements
 
-- contiguous memory storage container (vector, string, array)
+- contiguous-memory container (vector, string, array)
   - support fast random access
   - In exchange, add/remove element in the middle of container is inefficient
 
@@ -161,18 +161,18 @@ c.clear() // return void
 c.back() // not for forward_list
 c.front()
 
-// ranom access: at and subscript operation valid only for string, vector, deque, array
-c[n] // if overrun, undefined error happen
-c.at(n) // if overrun, throw out_of_range exception
+// ranom access: at() and subscript(operator[]) valid only for contiguous-memory containers
+c[n] // no bounds checked, if overrun, undefined error happen. more efficient than at
+c.at(n) // bounds checked, if overrun, throw out_of_range exception
 ```
 notes:
 - make sure the container is not empty, or undefined error happen
 - all access operation return a reference.
 - safe random access
-  - subscript index must be "in range [0, size)", or undefined happen.
+  - operator[] must be "in range [0, size)", or undefined happen.
     - it's up to the programmer to ensure that the index is valid
     - compiler will not check whether the index is out_of_range
-  - use "at" member to ensure the index is invalid
+  - use at() to ensure the index is invalid
     - if the index is invalid, throw an out_of_range exception
 
 #### resize a container
