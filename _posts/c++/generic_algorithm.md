@@ -41,4 +41,30 @@
 
 #### Lambda expressions
 
-Lambda 表达式简单说就是个匿名函数（译注：原文为in-place function，意思是“用来镶嵌的函数”，但是匿名函数能更精确表达这个含义）
+- callable object(可调用对象)
+  - a object or expression is callable if we can apply the call operator to it
+  - that is, if e is callable object. we can write e(args);
+
+- 4 kinds of callable object
+  - function
+  - function pointer
+  - function object: class which overloaded operator()
+  - lambda expression
+
+- Lambda 表达式简单说就是个匿名函数（译注：原文为in-place function，意思是“用来镶嵌的函数”，但是匿名函数能更精确表达这个含义）
+
+- lambda form:
+  - capture list: an list of local variables defined in the enclosing function, often empty.
+  - parameter list: same as ordinary function
+  - return type: unlike ordinary function, a lambda must use a `trailing return type(尾置返回类型)` to specify its return type
+  - function body: same as ordinary function
+
+  ```
+  [capture list](parameter list) -> return type { function body }
+
+  // must always include [capture list] and function body
+  // when omit parameter list is equivalent to a empty parameter list
+  // when omit return type, than the return type is inferred from the type of expression
+  auto f = [] { return 42; }; // return type is int
+  cout << f() << endl; // output is 42
+  ```
