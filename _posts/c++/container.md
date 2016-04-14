@@ -17,9 +17,6 @@
 
 - associative container
 
-标准容器
-非标准容器
-
 ### sequential container 顺序容器
 顺序容器：元素在容器中的顺序与其加入容器时的位置相对应，而不依赖于元素本身的值.
 
@@ -206,9 +203,6 @@ c.rbegin(), c.rend() //return reverse_iterator
 c.crbegin(), c.crend()
 ```
 
-
-
-
 ### iterator
 - left-inclusive interval [begin, end)
 - features
@@ -226,3 +220,9 @@ iter->mem
 iter1 == iter2
 iter1 != iter2
 ```
+
+
+
+## 选择合适的容器
+
+关心查找速度，首先应该考虑散列容器（非标准STL容器,如：unordered_map,unordered_set)；其次是排序的vector，然后是标准的关联容器；

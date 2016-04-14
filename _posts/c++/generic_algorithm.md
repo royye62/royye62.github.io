@@ -40,3 +40,5 @@
 - the parameter type of the predicate must be compatible with element type!
 
 #### Lambda expressions
+
+Lambda 表达式简单说就是个匿名函数（译注：原文为in-place function，意思是“用来镶嵌的函数”，但是匿名函数能更精确表达这个含义）

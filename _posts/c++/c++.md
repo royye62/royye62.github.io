@@ -72,3 +72,36 @@
 object-based 是对象语义
 abstract data type(ADT) 是值语义
 ？？
+
+## C++ best-practice
+- 前置声明
+
+
+
+## C++11
+[C++11 的 5 个实用特性](http://blog.jobbole.com/95719/)
+
+### 语言新特性
+- Strongly Typed Enums 强类型枚举
+传统C++中枚举常量被暴漏在外层作用域中，这样若是同一作用域下有两个不同的枚举类型，但含有相同的枚举常量也是不可的，比如：
+另外一个缺陷是传统枚举值总是被隐式转换为整形，用户无法自定义类型
+```
+enum Side{Right,Left};  
+enum Thing{Wrong,Right};  
+```
+
+强类型枚举使用enum class语法来声明，如下：
+```
+enum class Enumeration{  
+ VAL1,  
+ VAL2,  
+ VAL3=100,  
+ VAL4  
+};  
+```
+
+- static_assert
+static_assert 简单说就是一个在编译期执行的断言。
+```
+static_assert(sizeof(unsigned int) * CHAR_BIT == 32);
+```
