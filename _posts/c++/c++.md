@@ -1,4 +1,19 @@
+### why c++
 
+- c++的强大之处在于抽象不以性能为代价
+  - c++的class的memory layout和c的基本一样， 这样的设计带来性能的好处`memory locality`
+
+[面向对象真正核心的思想是消息传递](http://blog.csdn.net/myan/article/details/5928531)
+[杂谈现代高级编程语言](https://cxwangyi.wordpress.com/2011/06/19/%E6%9D%82%E8%B0%88%E7%8E%B0%E4%BB%A3%E9%AB%98%E7%BA%A7%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/)
+面向对象真正核心的思想是消息传递，封装、继承、多态只是表象
+
+- 静态消息机制：Simula ==> c++
+  - 导致了形而上学的“面向类设计”
+- 动态消息机制: Smalltalk ==> object-c
+
+
+
+### c++ 重点
 - c++, c++11
 - c++ library
   - STL
@@ -40,6 +55,8 @@
   - function object
 
 
+
+
 ## 编译期 vs. 运行期
 	C++在编译期中做了很多工作，以提高运行期的性能
 
@@ -69,11 +86,25 @@
     - the reference `must` be initialized (binded with a variable) and can not rebind with another, this hint that reference may be const
   - why use? it's fast as pointer and easy-to-read
 
-### C++对象语义与值语义
-object-based 是对象语义
-abstract data type(ADT) 是值语义
-????
+### value sematics, object sematics
+- value semantics 值语义:
+  - 复制后与以前的对象无关的对象叫做值语义，就像拷贝 int 一样
+  - C++ 的内置类型(bool/int/double/char)都是值语义
+  - 标准库里的 complex<> 、pair<>、vector<>、map<>、string 等等类型也都是值语意，拷贝之后就与原对象脱离关系
+  - C++ 要求凡是可以放入容器的元素都必须具备value语义，即必须具备拷贝的能力，放入标准容器的元素和之前的元素没有任何的关联。
+  - abstract data type(ADT) 是值语义
 
+- object semantics/reference semantics 对象语义/引用语义
+  - 对象语义指的是面向对象意义下的对象，对象拷贝是禁止的
+  - 无法复制或者复制后与原来的对象存在关联的对象称为引用语义。
+  - object-based, object-oriented 是对象语义
+
+- value sematics vs. object semantics
+```
+值语义的一个巨大好处是生命期管理很简单，就跟 int 一样——你不需要操心 int 的生命期。值语义的对象要么是 stack object，或者直接作为其他 object 的成员，因此我们不用担心它的生命期（一个函数使用自己stack上的对象，一个成员函数使用自己的数据成员对象）
+相反，对象语义的 object 由于不能拷贝，我们只能通过指针或引用来使用它。一旦使用指针和引用来操作对象，那么就要担心所指的对象是否已被释放。
+有了 smart pointer，我们可以借助 smart pointer 把对象语义（裸指针）转换为值语义，从而轻松解决对象生命期
+```
 
 ### initialization
 - default initialized 默认初始化
@@ -104,10 +135,10 @@ abstract data type(ADT) 是值语义
 
 
 
-## C++11
+## C++11 语言新特性
 [C++11 的 5 个实用特性](http://blog.jobbole.com/95719/)
 
-### 语言新特性
+
 - Strongly Typed Enums 强类型枚举
 传统C++中枚举常量被暴漏在外层作用域中，这样若是同一作用域下有两个不同的枚举类型，但含有相同的枚举常量也是不可的，比如：
 另外一个缺陷是传统枚举值总是被隐式转换为整形，用户无法自定义类型
@@ -131,3 +162,6 @@ static_assert 简单说就是一个在编译期执行的断言。
 ```
 static_assert(sizeof(unsigned int) * CHAR_BIT == 32);
 ```
+
+
+右值引用??

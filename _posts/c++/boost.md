@@ -38,27 +38,3 @@ void main()
    Test c = a;     // error
 }
 ```
-
-auto_ptr(obsolete)
-  任何情况下都不使用auto_ptr
-
-unique_ptr
-
-shared_ptr
-[boost::shared_ptr文档](http://www.boost.org/doc/libs/1_60_0/libs/smart_ptr/shared_ptr.htm)
-  std::tr1::shared_ptr 或 boost::shared_ptr
-  实现了 reference-counting
-  控制对象的生命周期
-
-weak_ptr
-  weak_ptr 是shared_ptr的好搭档，可以作弱回调、对象池等
-
-scoped_ptr
-  memory leak, double delete
-
-
-采用 shared_ptr/scoped_ptr 来管理对象的生命周期
-
-
-dangling pointer 空悬指针： 指向已销毁的对象或者已经回收的地址
-wild pointer 野指针：未初始化的指针
