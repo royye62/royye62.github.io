@@ -66,12 +66,38 @@
 
 - reference => the alias of a variable
   - the essence is a const pointer(Type * const name)
+    - the reference `must` be initialized (binded with a variable) and can not rebind with another, this hint that reference may be const
   - why use? it's fast as pointer and easy-to-read
 
 ### C++对象语义与值语义
 object-based 是对象语义
 abstract data type(ADT) 是值语义
-？？
+????
+
+
+### initialization
+- default initialized 默认初始化
+  - what the default value is ? depend on variable data type and the position of variable
+  - build-in Type
+    - if outside the functions, initialized as 0
+    - if inside the functions, uninitialized. it's a danger.
+    ```
+    int i; // initialized as 0
+    void bar() {
+      int j; // uninitialized
+    }
+    ```
+  - class Type
+    - default constructor
+    - if no default constructor, compiler error
+
+- value-initialized
+  - the initialized value depends on element type
+  ```
+  vector<int> ivec(10); //10 elements, all initialized to 0
+  vector<string> svec(10); //10 elements, all initialized to empty string
+  int *p = new int(); // *p initialized t 0
+  ```
 
 ## C++ best-practice
 - 前置声明

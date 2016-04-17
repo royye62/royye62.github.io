@@ -1,24 +1,28 @@
-## container
-- container
-- adaptor
-- algorithm
+## stl
+- stl 6 components
+  - allocator
+  - container
+  - algorithm
+  - iterator
+  - functor
+  - adaptor
 
-- sequential container
+### sequential container 顺序容器
+- elements are stored and accessed sequentially by their position in the container
+  - the sequence of elements is corresponding with the position while they adding to the container, not their value.
+
+- category of sequential container
   - vector
   - deque (double-ended queue)
   - list
   - forward_list (singly linked list)
   - array
   - string
+
 - sequential container adaptor 顺序容器适配器
   - stack
   - queue
   - priority_queue
-
-- associative container
-
-### sequential container 顺序容器
-顺序容器：元素在容器中的顺序与其加入容器时的位置相对应，而不依赖于元素本身的值.
 
 - performance trade-offs(性能折中) of container
   - the costs to add/remove elements in container
@@ -190,36 +194,7 @@ c.reserve(n)
   - it's an serious run-time error to use an invalidated pointers, references, or iterators, as using uninitialized pointer
 - ensure pointers, references, or iterators is refreshed when container is changed by add/remove/resize
 
-#### iterator
-```
-c.begin(), c.end()
-c.cbegin(), c.cend()
-```
 
-#### reverse_iterator
-not support forward_list
-```
-c.rbegin(), c.rend() //return reverse_iterator
-c.crbegin(), c.crend()
-```
-
-### iterator
-- left-inclusive interval [begin, end)
-- features
-  - end point to the next position of the last element;
-  - begin always before end, and keep begin++ always can reach end;
-- meanings:
-  - begin == end ==> empty;
-  - begin != end ==> at last 1 elements, begin point to the first element; (convenient for using as loop conditions !!!)
-- common operation
-```
-*iter
-iter->mem
-++iter
---iter // not support forward_list
-iter1 == iter2
-iter1 != iter2
-```
 
 
 
