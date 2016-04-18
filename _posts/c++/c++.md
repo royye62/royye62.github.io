@@ -2,6 +2,7 @@
 
 - c++的强大之处在于抽象不以性能为代价
   - c++的class的memory layout和c的基本一样， 这样的设计带来性能的好处`memory locality`
+- c++的性能优势很大程度上得益于对内存布局(memory layout)的精确控制，从而优化内存访问的局部性（locality of reference），并充分利用内存阶层（memory hierarchy）提速。这一点优势近期内不会被基于GC的语言赶上。chenshuo.p580
 
 [面向对象真正核心的思想是消息传递](http://blog.csdn.net/myan/article/details/5928531)
 [杂谈现代高级编程语言](https://cxwangyi.wordpress.com/2011/06/19/%E6%9D%82%E8%B0%88%E7%8E%B0%E4%BB%A3%E9%AB%98%E7%BA%A7%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/)

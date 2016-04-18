@@ -20,18 +20,22 @@
     - `wild pointer` 野指针：未初始化的指针
   - use smart pointer can avoid those problems
 
-- two smart pointer types + 1伴随类指针
-  - unique_ptr: `owns` the object to which it points.
-  - shared_ptr: allow multiple pointers to refer to same object
-  - weak_ptr: a weak reference to an object managed by shared_ptr.
-      weak_ptr 是shared_ptr的好搭档，可以作弱回调、对象池等
+- 4 smart pointer types
+  - std::shared_ptr: allow multiple pointers to refer to same object
+    - some overhead (reference counting), can be copied.
+    - beware of references cycles
+  - std::weak_ptr: a weak reference to an object managed by shared_ptr.
+      - weak_ptr 是shared_ptr的好搭档，可以作弱回调、对象池等
 
-- other
+  - std::unique_ptr: `owns` the object to which it points.
+    - no overhead, cannot be copied, can be moved.
   - boost::scoped_ptr
+    - no overhead, cannot be copied or moved.
     - scoped_ptr is similar to unique_ptr but does not allow transfer of ownership. It works great as long as the smart pointer is meant to retain exclusive ownership throughout its lifetime.
     - scoped_ptr is neither copyable nor movable. It is the preferred choice when you want to make sure pointers are deleted when going out of scope.
+
   - auto_ptr(obsolete)
-    - neve use it, using unique_ptr instead
+    - never use it, using unique_ptr instead
 
 
 ### shared_ptr
