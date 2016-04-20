@@ -129,12 +129,18 @@
   vector<int> ivec(10); //10 elements, all initialized to 0
   vector<string> svec(10); //10 elements, all initialized to empty string
   int *p = new int(); // *p initialized t 0
+
+  pair<string,vector<int>> line; // empty string and empty vector<int>
   ```
 
 ## C++ best-practice
 - 前置声明
 
 
+## RTTI
+RTTI（Run-Time Type Identification，运行时类型识别），它使程序能够获取由基指针或引用所指向的对象的实际派生类型，即允许“用指向基类的指针或引用来操作对象”的程序能够获取到“这些指针或引用所指对象”的实际派生类型。
+在C++中，为了支持RTTI提供了两个操作符：dynamic_cast和typeid
+typeid
 
 ## C++11 语言新特性
 [C++11 的 5 个实用特性](http://blog.jobbole.com/95719/)
@@ -163,6 +169,10 @@ static_assert 简单说就是一个在编译期执行的断言。
 ```
 static_assert(sizeof(unsigned int) * CHAR_BIT == 32);
 ```
+
+- decltype
+p223
+p379
 
 
 右值引用??
