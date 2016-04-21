@@ -46,7 +46,8 @@ inline int compare(const char (&p1)[N], const char (&p2)[M]) {
 cout << compare("a", "ba") << endl;
 ```
 
-### 类模板(class template)
+### class template 类模板
+template <typename T> class Stack {...};
 
 #### 类模板的实例化
 - 类模板实例化必须提供显式模板实参

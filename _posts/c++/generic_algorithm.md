@@ -110,23 +110,23 @@
 - list and forward_list should use `member version algorithm` in preference to `generic algorithm`
   - list can use generic version algorithm, but at a cost in performance
 - member version algorithm of list data structure
-```
-lst.merge(lst2)
-lsg.merge(lst2, comp)
+  ```
+  lst.merge(lst2)
+  lsg.merge(lst2, comp)
 
-lst.remove(val)
-lst.remove_if(pred)
-lst.reverse()
+  lst.remove(val)
+  lst.remove_if(pred)
+  lst.reverse()
 
-lst.sort()
-lst.sort(comp)
-lst.unique()
-lst.unique(pred)
-```
+  lst.sort()
+  lst.sort(comp)
+  lst.unique()
+  lst.unique(pred)
+  ```
 
 - splice member: this algorithm is particular to list data structure
-```
-lst.splice(p, lst2)
-lst.splice(p, lst2, p2)
-lst.splice(p, lst2, b, e)
-```
+  ```
+  lst.splice(p, lst2)
+  lst.splice(p, lst2, p2)
+  lst.splice(p, lst2, b, e)
+  ```

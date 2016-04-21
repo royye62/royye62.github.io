@@ -101,9 +101,6 @@ p.second
   copy(v.begin(), v.end(), inserter(c, c.end())) // as a destination
   ```
 
-
-
-
 ### container common operation
 #### typedef in container
 common
@@ -249,10 +246,6 @@ c.reserve(n)
 - container operations `add, remove, or resize`, may invalidate pointers, references, or iterators to container elements.
   - it's an serious run-time error to use an invalidated pointers, references, or iterators, as using uninitialized pointer
 - ensure pointers, references, or iterators is refreshed when container is changed by add/remove/resize
-
-
-
-
 
 ## 选择合适的容器
 
