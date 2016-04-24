@@ -145,6 +145,10 @@ typeid
 ## C++11 语言新特性
 [C++11 的 5 个实用特性](http://blog.jobbole.com/95719/)
 
+- nullptr
+
+- cstdint: Fixed width integer types (since C++11)
+> http://en.cppreference.com/w/cpp/types/integer
 
 - Strongly Typed Enums 强类型枚举
 传统C++中枚举常量被暴漏在外层作用域中，这样若是同一作用域下有两个不同的枚举类型，但含有相同的枚举常量也是不可的，比如：
