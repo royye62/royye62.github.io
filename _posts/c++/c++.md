@@ -136,15 +136,16 @@
 ## C++ best-practice
 - 前置声明
 
-
-## RTTI
+### RTTI
 RTTI（Run-Time Type Identification，运行时类型识别），它使程序能够获取由基指针或引用所指向的对象的实际派生类型，即允许“用指向基类的指针或引用来操作对象”的程序能够获取到“这些指针或引用所指对象”的实际派生类型。
 在C++中，为了支持RTTI提供了两个操作符：dynamic_cast和typeid
 typeid
 
+### RAII(Resource Acquisition Is Initialization) 资源获取即初始化
+Resource Acquisition Is Initialization or RAII, is a C++ programming technique which binds the life cycle of a resource (allocated memory, thread of execution, open socket, open file, locked mutex, database connection—anything that exists in limited supply) to the lifetime of an object.
+
 ## C++11 语言新特性
 [C++11 的 5 个实用特性](http://blog.jobbole.com/95719/)
-
 
 - Strongly Typed Enums 强类型枚举
 传统C++中枚举常量被暴漏在外层作用域中，这样若是同一作用域下有两个不同的枚举类型，但含有相同的枚举常量也是不可的，比如：
@@ -164,8 +165,23 @@ enum class Enumeration{
 };  
 ```
 
+- constexpr 常量表达式
+编译期计算（Compile-time evaluation）
+```
+constexpr int multiply (int x, int y)
+{
+    return x * y;
+}
+
+// 将在编译时计算，而不是在运行时
+const int val = multiply( 10, 10 );
+cin >> x;
+// 由于输入参数x只有在运行时确定，所以以下这个不会在编译时计算，但执行没问题
+const int val2 = mutliply（x,x);
+```
+
 - static_assert
-static_assert 简单说就是一个在编译期执行的断言。
+编译期断言检查
 ```
 static_assert(sizeof(unsigned int) * CHAR_BIT == 32);
 ```
@@ -174,5 +190,12 @@ static_assert(sizeof(unsigned int) * CHAR_BIT == 32);
 p223
 p379
 
+```
+template <typename T1, typename T2>
+auto add(T1 t1, T2 t2) -> decltype(t1 + t2)
+{
+return t1 + t2;
+}
+```
 
 右值引用??
