@@ -142,7 +142,27 @@ RTTI（Run-Time Type Identification，运行时类型识别），它使程序能
 typeid
 
 ### RAII(Resource Acquisition Is Initialization) 资源获取即初始化
+
+- 资源的生命周期和对象的生命周期严格绑定
 Resource Acquisition Is Initialization or RAII, is a C++ programming technique which binds the life cycle of a resource (allocated memory, thread of execution, open socket, open file, locked mutex, database connection—anything that exists in limited supply) to the lifetime of an object.
+
+- 由对象的构造函数完成资源的分配(获取)，同时由析构函数完成资源的释放。只要`对象能正确地析构`，就不会出现资源泄露问题
+  - C++保证了所有栈对象在生命周期结束时会被销毁(即调用析构函数)
+  - 无论在函数正常返回时，还是在途中抛出异常时，都会引发函数的堆栈回退(stack unwinding)。从而会自动调用对象的析构函数
+  - 这样，当一个函数需要通过多个`局部变量`来管理资源时，RAII就显得非常好用。因为`只有被构造成功(构造函数没有抛出异常)的对象才会在返回时调用析构函数`，同时`析构函数的调用顺序恰好是它们构造顺序的反序`，这样既可以保证多个资源(对象)的正确释放，又能满足多个资源之间的依赖关系。
+
+- Benefits
+  - The advantages of RAII as a resource management technique are that it provides encapsulation, exception safety (`for stack resources`), and locality (it allows acquisition and release logic to be written next to each other).
+  - relieves the burden of calling "resource release" operation in a clever way.
+  - RAII可以极大地简化资源管理，并有效地保证程序的正确和代码的简洁，所以通常会强烈建议在C++中使用它
+    - 虽然RAII和finally都能保证资源管理时的异常安全，相对于使用用finally来说，使用RAII能减少代码量
+
+- Typical uses
+  - The RAII design is often used for controlling mutex locks in multi-threaded applications.
+    - std::lock_guard
+  - Another typical example is interacting with files
+  - smart_ptr
+
 
 ## C++11 语言新特性
 [C++11 的 5 个实用特性](http://blog.jobbole.com/95719/)
