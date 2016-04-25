@@ -45,7 +45,7 @@
 
 ### associative container 关联容器
 - Elements in an associative container are stored and retrieved by a `key`
-  - In contrast, elements in a sequential container are stored and accessed sequentially by their position in the container.
+  - In contrast, elements in a sequential container are stored and accessed `sequentially by their position in the container`.
 
 - two primary types
   - map
@@ -58,6 +58,7 @@
     - a set is most useful when we simply want to know whether a value is present. for example: white-list
     - use when to keep elements sorted and unique
 
+- 8 associative containers
 ```
 // elements ordered by key
 map // key-value pairs, unique key
@@ -209,6 +210,13 @@ c.erase(b, e) // return an iterator to the element after the last deleted one
 c.clear() // return void
 ```
 
+associative container remove
+```
+c.erase(k) // remove all element with key k, return size_type indicating the number of elements removed.
+c.erase(p)  // remove element denoted by iterator p
+c.erase(b, e)
+```
+
 #### access element
 sequential container access
 ```
@@ -228,6 +236,53 @@ notes:
     - compiler will not check whether the index is out_of_range
   - use at() to ensure the index is invalid
     - if the index is invalid, throw an out_of_range exception
+
+
+associative container acces
+subscript a map
+- map and unordered_map container provide the subscript operator and at function. other associate container not support subscript.
+```
+c[k]
+c.at(k) // if k not exist, throw a out_of_range exception
+```
+- unlike other subscript operators, if the key is not exist, a new element is created and inserted into the map for the key.
+- when we dereference a map iterator, we get a `value_type` object
+  - `*map.begin()` ==> return value_type
+- when we use `key_type` to subscript a map, we get a `mapped_type` object. and it's an `lvalue(left-value)`, we can read and write it.
+  - map[key_type] ==> return mapped_type
+
+using find instead of subscript for map
+```
+// count is better to deal with multimap or multi multiset
+// find is better to deal with unique key associative container
+c.find(k)  // return an iterator denoted the first element with key k.
+c.count(k) // return the number of elements with key k
+
+c.lower_bound(k) // return an iterator to the first element with key not less than k, that is the fist element with key k.
+c.upper_bound(k) // return an iterator to the first element with key greater than k, that is the next position of last element with key k.
+c.equal_range(k) // return a pair of iterators, denoted the range of elements with key k
+```
+using subscript has a important side-effect. insert an element if the key not exist.
+e.g. check if an element is present, we should use find instead.
+```
+if (word_count.find("foobar") == word_count.end())
+  cout << "foobar is not in the map" << endl;
+```
+
+finding elements in a multi-map or multi-set
+method1
+```
+for (auto beg = authors.lower_bound(search_item)),
+          end = authors.upper_bound(search_item);
+          beg != end; ++beg)
+    cout << beg->second << endl;
+```
+method2
+```
+for (auto pos = authors.equal_range(search_item))；
+        pos.first != post.second; ++pos.first)
+    cout << pos.first->second << end;
+```
 
 #### resize a container
 ```

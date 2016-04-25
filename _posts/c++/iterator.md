@@ -1,15 +1,9 @@
 
-
-
 - iterator
-
   - insert iterator
   - stream iterator
   - reverse iterator
   - move iterator
-
-
-
 
 ### iterator
   - left-inclusive interval [begin, end)
