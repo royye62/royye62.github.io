@@ -1,7 +1,14 @@
 
 ### memory problems
-- buffer overrun 缓冲区溢出
-- double free
+```
+buffer overrun 缓冲区溢出
+buffer overflow
+dangling pointer 空悬指针(pointer after free/delete)
+uninitialized pointer 野指针
+double free/delete
+memory leak
+memory fragmentation
+```
 
 ## resource
 [What is a smart pointer and when should I use one?](http://stackoverflow.com/questions/106508/what-is-a-smart-pointer-and-when-should-i-use-one/106614#106614)

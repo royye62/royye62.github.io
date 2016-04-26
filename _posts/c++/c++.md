@@ -144,6 +144,8 @@ typeid
 ### RAII(Resource Acquisition Is Initialization) 资源获取即初始化
 Resource Acquisition Is Initialization or RAII, is a C++ programming technique which binds the life cycle of a resource (allocated memory, thread of execution, open socket, open file, locked mutex, database connection—anything that exists in limited supply) to the lifetime of an object.
 
+RAII要求，资源的有效期与持有资源的对象的生命期严格绑定，即由对象的构造函数完成资源的分配(获取)，同时由析构函数完成资源的释放。在这种要求下，只要对象能正确地析构，就不会出现资源泄露问题
+
 ## C++11 语言新特性
 [C++11 的 5 个实用特性](http://blog.jobbole.com/95719/)
 
