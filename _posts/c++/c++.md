@@ -65,7 +65,62 @@
 在C++的标准规格说明书中说到，编译器必需要保证虚函数表的指针存在于对象实例中最前面的位置（这是为了保证正确取到虚函数的偏移量）。 这意味着我们通过对象实例的地址得到这张虚函数表，然后就可以遍历其中函数指针，并调用相应的函数。
 
 
-前置声明(forward declaration)减少使用include
+### 前置声明(forward declaration)
+[关于前置声明与C++中头文件相互包含的几点问题](http://blog.csdn.net/crayondeng/article/details/10830351)
+[C++中前置声明的应用与陷阱](http://blog.csdn.net/yunyun1886358/article/details/5672574)
+
+意义：
+- 减少使用include
+- 前置声明可以解决两个类相互依赖的情况
+
+
+```
+// House.h  
+class CBed; // 盖房子时：现在先不买，肯定要买床的  
+class CHouse  
+{  
+    CBed* bed; // 我先给床留个位置  
+public:  
+    CHouse(void);  
+    virtual ~CHouse(void);  
+    void GoToBed();  
+};
+```
+
+C++编译器自上而下编译源文件的时候，对每一个数据的定义，总是需要知道定义的数据的类型的大小
+我就先声明类CBed，告诉编译器CBed是一个类（不用包含CBed的头文件）。
+编译器不知道CBed的大小(CBed是incomplelte)，任何需要获取CBed具体类对象（完整类信息）都不可能编译通过
+但是CBed* 的大小是确定，因此House.h可以编译通过
+
+```
+// House.cpp  
+#include "Bed.h"  
+#include "House.h" // 等房子开始装修了，要买床了  
+
+CHouse::CHouse(void)  
+{  
+    bed = new CBed(); // 把床放进房子  
+}  
+
+CHouse::~CHouse(void)  
+{  
+}  
+
+void CHouse::GoToBed()  
+{  
+    bed->Sleep();  
+}
+```
+
+在类的实现部分，如House.cpp里，需要CBed的具体类对象，因此需要 #include "House.h"，并链接house的定义。
+
+**原则**
+- 能不包含头文件，就不包含
+```
+通常在头文件定义里，如果只是用了一个类的指针，并没有使用该类的具体对象，也没有访问类的具体成员。则通过前置声明就可以，不需要include。
+因为指针的数据大小是固定的。
+```
+- 尽量在cpp文件里包含头文件，而不要在头文件里包含头文件
 
 
 ### C++语言的三大约束是
@@ -162,64 +217,3 @@ Resource Acquisition Is Initialization or RAII, is a C++ programming technique w
     - std::lock_guard
   - Another typical example is interacting with files
   - smart_ptr
-
-## C++11 语言新特性
-[C++11 的 5 个实用特性](http://blog.jobbole.com/95719/)
-
-- nullptr
-
-- cstdint: Fixed width integer types (since C++11)
-> http://en.cppreference.com/w/cpp/types/integer
-
-- Strongly Typed Enums 强类型枚举
-传统C++中枚举常量被暴漏在外层作用域中，这样若是同一作用域下有两个不同的枚举类型，但含有相同的枚举常量也是不可的，比如：
-另外一个缺陷是传统枚举值总是被隐式转换为整形，用户无法自定义类型
-```
-enum Side{Right,Left};  
-enum Thing{Wrong,Right};  
-```
-
-强类型枚举使用enum class语法来声明，如下：
-```
-enum class Enumeration{  
- VAL1,  
- VAL2,  
- VAL3=100,  
- VAL4  
-};  
-```
-
-- constexpr 常量表达式
-编译期计算（Compile-time evaluation）
-```
-constexpr int multiply (int x, int y)
-{
-    return x * y;
-}
-
-// 将在编译时计算，而不是在运行时
-const int val = multiply( 10, 10 );
-cin >> x;
-// 由于输入参数x只有在运行时确定，所以以下这个不会在编译时计算，但执行没问题
-const int val2 = mutliply（x,x);
-```
-
-- static_assert
-编译期断言检查
-```
-static_assert(sizeof(unsigned int) * CHAR_BIT == 32);
-```
-
-- decltype
-p223
-p379
-
-```
-template <typename T1, typename T2>
-auto add(T1 t1, T2 t2) -> decltype(t1 + t2)
-{
-return t1 + t2;
-}
-```
-
-右值引用??
