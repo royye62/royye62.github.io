@@ -151,3 +151,8 @@ cast-name<type>(expression)
 	- 基本类型转换用static_cast
 - reinterpret_cast
 	- 不同类型的指针类型转换用reinterpret_cast
+
+std::static_pointer_cast
+std::dynamic_pointer_cast
+std::const_pointer_cast
+std::reinterpret_pointer_cast

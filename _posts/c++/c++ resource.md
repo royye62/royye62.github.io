@@ -6,8 +6,9 @@ Essential C++
 C++ Primer
 C++ Programming Language
 
-C++编程规范
+#### C++ best-practice
 Google C++ Style Guide
+[CppCoreGuidelines](https://github.com/isocpp/CppCoreGuidelines)
 
 #### 进阶
 Effective C++
