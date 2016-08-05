@@ -42,28 +42,43 @@ pthread_mutex_unlock(&mutex);
 !!!!线程锁机制同时也不是异步信号安全的，也就是说，不应该在信号处理过程中使用互斥锁，否则容易造成死锁。
 
 #### condition variable 是等待原语，用来等待某个条件成立
-在条件不满足时阻塞线程，等条件为真时再唤醒该线程
-需要和互斥量mutex共同使用
 
+与互斥锁不同，条件变量是用来等待而不是用来上锁的，用于 多线程的同步，甚至进程同步
+条件变量用来自动阻塞一个线程，在条件不满足时阻塞线程，等条件为真时再唤醒该线程
+条件变量需要和互斥量mutex共同使用：因为条件变量本身不是原子操作,所以任何对条件变量的操作都要用一个线程锁来保护.
 
 ```
 pthread_cond_init
 pthread_cond_destroy
 
-pthread_cond_wait 等待条件变量
+等待条件变量
+pthread_cond_wait
 	int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex)
 	当 pthread_cond_wait() 被调用后，它解锁互斥量并停止线程的执行。在别的线程唤醒它之前它会一直保持暂停状态。这些操作是“原子操作”
 pthread_cond_timedwait
 
-唤醒：
+唤醒
 pthread_cond_signal 条件成立，唤醒等待的一个线程
 pthread_cond_broadcast 条件成立，唤醒所有等待线程
 ```
-与互斥锁不同，条件变量是用来等待而不是用来上锁的。条件变量用来自动阻塞一个线程，直到某特殊情况发生为止
-条件变量本身不是原子操作,所以任何对条件变量的操作都要用一个线程锁来保护.
 
-条件变量用于 多线程的同步，甚至进程同步
-	如果两进程共享可读写的内存，条件变量可以被用来实现这两进程间的线程同步。
+[pthread_cond_signal vs pthread_cond_broadcast](http://pubs.opengroup.org/onlinepubs/7908799/xsh/pthread_cond_signal.html)
+- pthread_cond_signal() will wake up `at least one` of the threads that is blocked on the condition variable - but more than that is not guaranteed.(for reference, use pthread_cond_broadcast() to wake up all blocked threads).
+
+- spurious wakeup: pthread_cond_wait的返回不仅仅是pthread_cond_signal和pthread_cond_broadcast导致的，还会有一些假唤醒
+```
+// always use a while-loop, due to spurious wakeup
+// 还有一种情况，如果多个线程都唤醒，有可能资源被别的线程抢了，因此需要while再判断下
+mutex.lock
+while(condition_is_false){
+	pthread_cond_wait();
+}
+do something
+mutex.unlock
+```
+
+- pthread_cond_wait底层是futex系统调用
+
 
 #### readerwriter locks 读写锁
 
@@ -102,17 +117,39 @@ if (x == 5) // The "Check"
 - 原子操作：多步的操作，要么全部执行完，要么一步都不执行。不可能只执行到中间。
 - 原子操作的话，竞态条件对数据结果的一致性没有影响
 
+```
+gcc __sync* 操作
+std::atomic
+```
+
+通过汇编代码查看是否原子操作。
+bool b = 1; // 只有一条汇编指令，atomic
+double d = 1.0 //两条汇编指令，non-atomic
+int i = 1;
+i++; //三条汇编指令，non-atomic
+
 ### deadlock 死锁
 - 死锁的调试
+```
+(gdb) bt
+#0  __lll_lock_wait () at ../nptl/sysdeps/unix/sysv/linux/x86_64/lowlevellock.S:135
+#1  0x00007ffa9bed0657 in _L_lock_909 () from /lib/x86_64-linux-gnu/libpthread.so.0
+#2  0x00007ffa9bed0480 in __GI___pthread_mutex_lock (mutex=0x7ffd5856e9b0) at ../nptl/pthread_mutex_lock.c:79
+....
+
+如果是多线程，则thread apply all bt
+```
 
 - 易错点，注意跳转语句容易造成死锁，没有unlock
-    pthread_mutex_lock(&mutex);
-    if(timer_list.num >= timer_list.max_num) {
-    	pthread_mutex_unlock(&mutex);  /*容易漏写*/
-        return INVALID_TIMER_ID;
-    }
-    pthread_mutex_unlock(&mutex);
+pthread_mutex_lock(&mutex);
+if(timer_list.num >= timer_list.max_num) {
+	pthread_mutex_unlock(&mutex);  /*容易漏写*/
+    return INVALID_TIMER_ID;
+}
+pthread_mutex_unlock(&mutex);
 
+- 多次加锁
+比如在加锁的临界区里的函数调用里面，又进行加锁
 
 ### IPC问题
 
@@ -184,7 +221,10 @@ attributes are per-thread, distinct for each pthred
 2. signal mask, Set of pending and blocked signals
 	A thread can manipulate its signal mask using pthread_sigmask(3)
 3. Thread specific data
-	such as: the errno variable
+```
+the errno variable
+__thread int t_cachedTid;
+```
 4. alternate signal stack
 5. real-time scheduling policy and priority
 6. capabilities
