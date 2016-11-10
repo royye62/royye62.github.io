@@ -1,7 +1,8 @@
 ### why c++
 
 - c++的强大之处在于抽象不以性能为代价
-  - c++的class的memory layout和c的基本一样， 这样的设计带来性能的好处`memory locality`
+  - c++的class的memory layout和c的基本一样，这样的设计带来性能的好处`memory locality`
+  - c++和c一样是系统级语言，但c++对复杂度的控制能力远远比c好
 - c++的性能优势很大程度上得益于对内存布局(memory layout)的精确控制，从而优化内存访问的局部性（locality of reference），并充分利用内存阶层（memory hierarchy）提速。这一点优势近期内不会被基于GC的语言赶上。chenshuo.p580
 
 [面向对象真正核心的思想是消息传递](http://blog.csdn.net/myan/article/details/5928531)
@@ -12,8 +13,6 @@
   - 导致了形而上学的“面向类设计”
 - 动态消息机制: Smalltalk ==> object-c
 
-
-
 ### c++ 重点
 - c++, c++11
 - c++ library
@@ -23,7 +22,6 @@
   - C99 stdlib
 - algorithm and data structure
 - multi-threads
-
 
 ### C++ is multi-paradigm Programming Language
 - procedural Programming
